@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Demo page</title>
+
+    <style>
+      ul.pub {line-height: 20px;}
+      ul.pub li {margin-bottom: 10px;}
+      ol.multi-column {float: left; width: 100%; line-height: 10px;}
+      ol.multi-column li {float: left; width: 50%; margin-bottom: 10px;}
+    </style>
+
+
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+<font size="6">
+          Statistical Learning and Estimation of Piano Fingering<br>
+</font>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+
+This is the <strong>accompanying webpage</strong> for the following paper:
+
+    <div style="height:20px;"></div>
+	<div style="margin:auto;padding:10px;text-align:center;border: 1px solid rgb(200,200,200); width:700px;background-color:rgba(235,255,250,1);">
+Eita Nakamura, Yasuyuki Saito, Kazuyoshi Yoshii<br>
+<strong>Statistical Learning and Estimation of Piano Fingering</strong><br>
+Submitted to IEEE/ACM Transactions on Audio, Speech and Language Processing
+	</div>
+    <div style="height:20px;"></div>
+
+        <h3>Estimation results by HMMs</h3>
+
+1st-order HMM: <a href="data/Result_FHMM1.zip"><strong><font color="#00A690">Result_FHMM1.zip</font></strong></a> (115KB)
+<br><br>
+2nd-order HMM: <a href="data/Result_FHMM2.zip"><strong><font color="#00A690">Result_FHMM2.zip</font></strong></a> (115KB)
+<br><br>
+3rd-order HMM: <a href="data/Result_FHMM3.zip"><strong><font color="#00A690">Result_FHMM3.zip</font></strong></a> (114KB)
+<br><br>
+
+        <h4>Training and test data</h4>
+
+The HMMs are trained and tested using different subsets of <a href="http://beam.kisarazu.ac.jp/~saito/research/PianoFingeringDataset/main.html" target="_blank" style="color:rgba(16,115,108,1);"><strong><em>Piano Fingering Dataset</em></strong></a>. To get access to the dataset and see details of the data format, please visit the <a href="http://beam.kisarazu.ac.jp/~saito/research/PianoFingeringDataset/main.html" target="_blank" style="color:rgba(50,50,50,1);"><strong>webpage</strong></a>.
+
+        <h3>Visualizer</h3>
+
+    <div style="height:200px;">
+<img src="image/Visualizer.jpg" align=right height="180" alt="Picture"/>
+<a href="http://fingeringdata.github.io/FingeringVisualizer.html" target="_blank"><strong><font color="#000096">This visualizer</font></strong></a> can be used for observing and comparing the above estimation results as well as the fingerings in <a href="http://beam.kisarazu.ac.jp/~saito/research/PianoFingeringDataset/main.html" target="_blank" style="color:rgba(16,115,108,1);"><strong><em>Piano Fingering Dataset</em></strong></a>. It works on browsers such as Google Chrome, Safari, Firefox, Microsoft Edge, etc.
+    </div>
+
+      </section>
+    </div>
+
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Maintained by <a href="http://eita-nakamura.github.io"><font color="#000096">Eita Nakamura</font></a>　(Last updated: Apr 2019)　　<img src="https://www.f-counter.net/j/31/1554832274/"></p>
+      </footer>
+    </div>
+
+
+
+
+
+  </body>
+</html>
