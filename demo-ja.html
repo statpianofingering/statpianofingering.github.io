@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>デモページ</title>
+
+    <style>
+      ul.pub {line-height: 20px;}
+      ul.pub li {margin-bottom: 10px;}
+      ol.multi-column {float: left; width: 100%; line-height: 10px;}
+      ol.multi-column li {float: left; width: 50%; margin-bottom: 10px;}
+    </style>
+
+
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+<font size="6">
+          ピアノ運指データを用いた統計学習手法による運指推定<br>
+</font>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+
+このページは以下の論文の付随ページです。
+
+    <div style="height:20px;"></div>
+	<div style="margin:auto;padding:10px;text-align:center;border: 1px solid rgb(200,200,200); width:700px;background-color:rgba(235,255,250,1);">
+中村栄太、齋藤康之、吉井和佳<br>
+<strong>ピアノ運指データを用いた統計学習手法による運指推定</strong><br>
+情報処理学会 音楽情報科学研究会にて発表
+	</div>
+    <div style="height:20px;"></div>
+
+        <h3>HMMによる運指の推定結果</h3>
+
+1次のHMM: <a href="data/Result_FHMM1.zip"><strong>Result_FHMM1.zip</strong></a> (115KB)
+<br><br>
+2次のHMM: <a href="data/Result_FHMM2.zip"><strong>Result_FHMM2.zip</strong></a> (115KB)
+<br><br>
+3次のHMM: <a href="data/Result_FHMM3.zip"><strong>Result_FHMM3.zip</strong></a> (114KB)
+<br><br>
+
+        <h4>学習データと評価データ</h4>
+
+<a href="http://beam.kisarazu.ac.jp/research/PianoFingeringDataset-j/" target="_blank"><strong>PIGデータセット</strong></a>の異なるサブセットを用いてHMMの学習と評価を行いました。データに関する詳細は<a href="http://beam.kisarazu.ac.jp/research/PianoFingeringDataset-j/" target="_blank"><strong>PIGデータセットのページ</strong></a>をご覧ください。
+
+        <h3>運指ビジュアライザー</h3>
+
+    <div style="height:200px;">
+<img src="image/Visualizer-ja.png" align=right height="180" alt="Picture"/>
+<a href="http://fingeringdata.github.io/FingeringVisualizer.html" target="_blank"><strong>このビジュアライザー</strong></a>を使えば、上の推定結果を観察したり比較できます。<a href="http://beam.kisarazu.ac.jp/research/PianoFingeringDataset-j/" target="_blank"><strong>PIGデータセット</strong></a>の中の運指も同様に見られます。Google Chrome、Safari、Firefox、Microsoft Edgeなどのブラウザー上で動作します。
+    </div>
+
+      </section>
+    </div>
+
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Maintained by <a href="http://eita-nakamura.github.io/index-ja.html">Eita Nakamura</a>　(Last updated: July 2019)　　<img src="https://www.f-counter.net/j/31/1554832274/"></p>
+      </footer>
+    </div>
+
+
+
+
+
+  </body>
+</html>
