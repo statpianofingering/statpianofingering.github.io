@@ -512,6 +512,11 @@ if(drawmode==0){
 			if(selectedPos.innerHTML==fin[noteID].fingerRep){return;}
 //			console.log(selectedPos.innerHTML);
 			fin[noteID].fingerRep=selectedPos.innerHTML;
+			if(fin[noteID].channel==0){//To right hand
+				fin[noteID].fingerNum=fin[noteID].fingerRep;
+			}else{//To left hand
+				fin[noteID].fingerNum='-'+fin[noteID].fingerRep;
+			}//endif
 			if(edits.length>0){
 				if(edits[edits.length-1][1]=='ChangeFinger' && edits[edits.length-1][0]==noteID){
 					edits[edits.length-1][2]=selectedPos.innerHTML;
@@ -534,9 +539,11 @@ if(drawmode==0){
 			if(fin[noteID].channel==0){//To right hand
 				selectedPos.style.color='red';
 				selectedPos.style.backgroundColor='rgba(50,255,0,0.8)';
+				fin[noteID].fingerNum=fin[noteID].fingerRep;
 			}else{//To left hand
 				selectedPos.style.color='blue';
 				selectedPos.style.backgroundColor='rgba(255,120,30,0.8)';
+				fin[noteID].fingerNum='-'+fin[noteID].fingerRep;
 			}//endif
 			edits.push([noteID,'ChangeHand',fin[noteID].channel]);
 			UpdateFreeText();
