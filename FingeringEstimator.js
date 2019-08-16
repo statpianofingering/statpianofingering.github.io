@@ -315,6 +315,8 @@ function Draw(){
 //console.log(document.getElementById("timeScale").value);
 //	pxPerSec=document.getElementById("timeScale").value*200;
 
+	document.getElementById('display').style.width=(window.innerWidth-50)+'px';
+
 if(drawmode==0){
 
 	document.getElementById('display').style.height=String(400+yoffset)+'px';
