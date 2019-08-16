@@ -30,6 +30,16 @@ window.onload = function(){
 function ReadFile(file,addmode=1){
 	var reader = new FileReader();
 
+	if(file.name.indexOf('.mid')==-1
+	   && file.name.indexOf('ipr.txt')==-1
+	   && file.name.indexOf('spr.txt')==-1
+	   && file.name.indexOf('fin.txt')==-1
+	   && file.name.indexOf('fingering.txt')==-1
+	){
+		alert('Accepted file formats:\n.mid / ipr.txt / spr.txt / fin.txt / fingering.txt');
+		return;
+	}//endif
+
 	if(file.name.indexOf('.mid')>=0){//MIDI file
 
 	var reader = new FileReader();
@@ -344,7 +354,7 @@ if(drawmode==0){
 	//Draw time lines
 	for(var t=0;t<maxTime;t+=1){
 		str+='<div style="position:absolute; left:'+(t*pxPerSec+xoffset-legerWidth)+'px; top:'+(heightC4-15*heightUnit-legerWidth)+'px; width:'+0+'px; height:'+9*heightUnit+'px; border:'+legerWidth+'px solid rgba(30,120,255,0.4);"></div>';
-		str+='<div style="position:absolute; left:'+(t*pxPerSec+xoffset-4)+'px; top:'+(heightC4-15*heightUnit-legerWidth-20)+'px; width:'+0+'px; height:'+0*heightUnit+'px; color:rgba(30,120,255,0.4); font-size:8pt">'+t+'</div>';
+		str+='<div style="position:absolute; left:'+(t*pxPerSec+xoffset-6)+'px; top:'+(heightC4-15*heightUnit-legerWidth-20)+'px; width:'+0+'px; height:'+0*heightUnit+'px; color:rgba(30,120,255,0.4); font-size:8pt">'+t+'</div>';
 	}//endfor t
 	str+='<img src="img/Gclef.png" height="'+(7.5*heightUnit)+'" style="position:absolute; left:'+(20)+'px; top:'+(heightC4-6.5*heightUnit)+'px;"/>';
 	str+='<img src="img/Fclef.png" height="'+(3.4*heightUnit)+'" style="position:absolute; left:'+(20+3)+'px; top:'+(heightC4+0.9*heightUnit)+'px;"/>';
