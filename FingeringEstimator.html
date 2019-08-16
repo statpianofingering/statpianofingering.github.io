@@ -73,6 +73,10 @@
 		<input id="difficultyButton" type="button" value="Show Difficulty" style="background-color:rgba(30,120,255,0.4); width:120px; height:25px;"/>
 	</form>
 
+	<div style="position:relative;height:10px;"></div>
+	<input id="listenButton" type="button" value="Listen" style="width:80px; height:15px; padding:0px; border-radius:5px; background-color:salmon; width:100px; height:25px;"/>
+	<input id="stopButton" type="button" value="Stop" style="width:80px; height:15px; padding:0px; border-radius:5px; background-color:salmon; width:100px; height:25px;"/>
+
 	<div id="display" style="position:relative; left:10px; top:10px; width:1000px; height:400px; overflow: scroll; border:1px solid rgb(200,200,200);">
 		<svg id="mysvg" xmlns="http://www.w3.org/2000/svg" width="500" height="400" style="position:absolute;top:0px;left:0px">
 		</svg>
@@ -93,11 +97,17 @@
 
 
 	<script src="jquery.js"></script>
+	<script src="Tone.js"></script>
 	<script src="BasicPitchCalculation.js"></script>
 	<script src="Midi.js"></script>
 	<script src="PianoRoll.js"></script>
 	<script src="myfunctions.js"></script>
 	<script src="FingeringEstimator.js"></script>
+
+	<script>
+		SetListenButton();
+	</script>
+
 
 </body>
 

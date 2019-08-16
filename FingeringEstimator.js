@@ -786,6 +786,36 @@ document.getElementById('difficultyButton').addEventListener('click', function(e
 	ShowDifficulty();
 });
 
+var synthOption = {
+	oscillator:{
+		type:"sine"
+	},
+	envelope:{
+		attack: 0.001,
+		decay: 0.3,
+		sustain: 0.5,
+		release: 1
+	}
+};
+
+function SetListenButton(){
+	var synth = new Tone.Synth(synthOption).toMaster();
+	document.getElementById('listenButton').addEventListener('click', function(event) {
+		console.log('clicked');
+		var now = Tone.now();
+//		synth.triggerAttackRelease('C5',2,now+1);
+//		synth.triggerAttackRelease('A4',2,now+2);
+		for(var n=0,len=fin.length;n<len;n+=1){
+			synth.triggerAttackRelease(fin[n].sitch,(fin[n].offtime-fin[n].ontime), now+fin[n].ontime);
+		}//endfor i
+	});
+
+	document.getElementById('stopButton').addEventListener('click', function(event) {
+		console.log('clicked');
+		synth=null;
+	});
+}//end SetListenButton
+
 
 
 
