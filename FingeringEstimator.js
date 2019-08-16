@@ -799,7 +799,8 @@ var synthOption = {
 };
 
 function SetListenButton(){
-	var synth = new Tone.Synth(synthOption).toMaster();
+//	var synth = new Tone.Synth(synthOption).toMaster();
+	var synth = new Tone.PolySynth(10).toMaster();
 	document.getElementById('listenButton').addEventListener('click', function(event) {
 		console.log('clicked');
 		var now = Tone.now();
@@ -812,7 +813,7 @@ function SetListenButton(){
 
 	document.getElementById('stopButton').addEventListener('click', function(event) {
 		console.log('clicked');
-		synth=null;
+		synth.disconnect();
 	});
 }//end SetListenButton
 
