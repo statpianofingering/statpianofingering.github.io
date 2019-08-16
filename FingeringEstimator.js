@@ -656,7 +656,7 @@ function ShowDifficulty(){
 	width=maxTime*pxPerSec;
 	for(var i=0;i<=10;i+=1){
 		if(i==5){
-			str+='<div style="position:absolute; left:'+(xoffset)+'px; top:'+(10*i+10)+'px; width:'+width+'px; height:0px; border:'+0.8+'px solid rgba(0,0,0,1);"></div>';
+			str+='<div style="position:absolute; left:'+(xoffset)+'px; top:'+(10*i+10)+'px; width:'+width+'px; height:0px; border:'+0.8+'px solid rgba(255,30,120,1);"></div>';
 		}else{
 			str+='<div style="position:absolute; left:'+(xoffset)+'px; top:'+(10*i+10)+'px; width:'+width+'px; height:0px; border:'+0.5+'px solid rgba(0,0,0,0.5);"></div>';
 		}//endif
