@@ -823,9 +823,8 @@ function SetListenButton(){
 			left:maxTime*pxPerSec+xoffset
 		},(maxTime-startTime)*1000,'linear');
 
-		$('#display').css({
-			scrollLeft:startTime*pxPerSec-500-xoffset
-		}).animate({
+		document.getElementById('display').scrollLeft=startTime*pxPerSec-500-xoffset;
+		$('#display').animate({
 			scrollLeft:maxTime*pxPerSec-500-xoffset
 		},(maxTime-startTime)*1000,'linear');
 
