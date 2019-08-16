@@ -476,18 +476,18 @@ if(drawmode==0){
 			if(fin[i].channel!=ichan){continue;}
 			var finEvt=fin[i];//finEvt.pitch
 			//Note box
-			str+='<div style="position:absolute; left:'+(finEvt.ontime*pxPerSec+xoffset-1)+'px; top:'+(1000-10*finEvt.pitch)+'px; width:'+(finEvt.offtime-finEvt.ontime)*pxPerSec+'px; height:9px; border:1px solid rgba(50,50,50,1);"></div>';
+			str+='<div style="position:absolute; left:'+(finEvt.ontime*pxPerSec+xoffset-1)+'px; top:'+(1120-10*finEvt.pitch)+'px; width:'+(finEvt.offtime-finEvt.ontime)*pxPerSec+'px; height:9px; border:1px solid rgba(50,50,50,1);"></div>';
 			if(mode==0){
 				if(ichan==0){
-					str+='<div id="note'+finEvt.ID+'" contentEditable=true style="position:absolute; left:'+(finEvt.ontime*pxPerSec+xoffset)+'px; top:'+(1000-10*finEvt.pitch+1)+'px; width:'+(finEvt.offtime-finEvt.ontime)*pxPerSec+'px; height:9px; background-color:rgba(50,255,0,0.8); color:red; font-size:7px;">'+finEvt.fingerRep+'</div>';
+					str+='<div id="note'+finEvt.ID+'" contentEditable=true style="position:absolute; left:'+(finEvt.ontime*pxPerSec+xoffset)+'px; top:'+(1120-10*finEvt.pitch+1)+'px; width:'+(finEvt.offtime-finEvt.ontime)*pxPerSec+'px; height:9px; background-color:rgba(50,255,0,0.8); color:red; font-size:7px;">'+finEvt.fingerRep+'</div>';
 				}else if(ichan==1){
-					str+='<div id="note'+finEvt.ID+'" contentEditable=true style="position:absolute; left:'+(finEvt.ontime*pxPerSec+xoffset)+'px; top:'+(1000-10*finEvt.pitch+1)+'px; width:'+(finEvt.offtime-finEvt.ontime)*pxPerSec+'px; height:9px; background-color:rgba(255,120,30,0.8); color:blue; font-size:7px;">'+finEvt.fingerRep+'</div>';
+					str+='<div id="note'+finEvt.ID+'" contentEditable=true style="position:absolute; left:'+(finEvt.ontime*pxPerSec+xoffset)+'px; top:'+(1120-10*finEvt.pitch+1)+'px; width:'+(finEvt.offtime-finEvt.ontime)*pxPerSec+'px; height:9px; background-color:rgba(255,120,30,0.8); color:blue; font-size:7px;">'+finEvt.fingerRep+'</div>';
 				}//endif
 			}else{
 				if(ichan==0){
-					str+='<div id="note'+finEvt.ID+'" style="position:absolute; left:'+(finEvt.ontime*pxPerSec+xoffset)+'px; top:'+(1000-10*finEvt.pitch+1)+'px; width:'+(finEvt.offtime-finEvt.ontime)*pxPerSec+'px; height:9px; background-color:rgba(50,255,0,0.8); color:black; font-size:7px;">'+finEvt.ID+'</div>';
+					str+='<div id="note'+finEvt.ID+'" style="position:absolute; left:'+(finEvt.ontime*pxPerSec+xoffset)+'px; top:'+(1120-10*finEvt.pitch+1)+'px; width:'+(finEvt.offtime-finEvt.ontime)*pxPerSec+'px; height:9px; background-color:rgba(50,255,0,0.8); color:black; font-size:7px;">'+finEvt.ID+'</div>';
 				}else if(ichan==1){
-					str+='<div id="note'+finEvt.ID+'" style="position:absolute; left:'+(finEvt.ontime*pxPerSec+xoffset)+'px; top:'+(1000-10*finEvt.pitch+1)+'px; width:'+(finEvt.offtime-finEvt.ontime)*pxPerSec+'px; height:9px; background-color:rgba(255,120,30,0.8); color:black; font-size:7px;">'+finEvt.ID+'</div>';
+					str+='<div id="note'+finEvt.ID+'" style="position:absolute; left:'+(finEvt.ontime*pxPerSec+xoffset)+'px; top:'+(1120-10*finEvt.pitch+1)+'px; width:'+(finEvt.offtime-finEvt.ontime)*pxPerSec+'px; height:9px; background-color:rgba(255,120,30,0.8); color:black; font-size:7px;">'+finEvt.ID+'</div>';
 				}//endif
 			}//endif
 		}//endfor i
