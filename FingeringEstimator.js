@@ -343,8 +343,8 @@ if(drawmode==0){
 
 	//Draw time lines
 	for(var t=0;t<maxTime;t+=1){
-		str+='<div style="position:absolute; left:'+(t*pxPerSec+xoffset-legerWidth)+'px; top:'+(heightC4-5*heightUnit-legerWidth)+'px; width:'+0+'px; height:'+10*heightUnit+'px; border:'+legerWidth+'px solid rgba(30,30,30,0.3);"></div>';
-		str+='<div style="position:absolute; left:'+(t*pxPerSec+xoffset-4)+'px; top:'+(heightC4-5*heightUnit-legerWidth-20)+'px; width:'+0+'px; height:'+10*heightUnit+'px; color:rgba(30,30,30,0.3); font-size:8pt">'+t+'</div>';
+		str+='<div style="position:absolute; left:'+(t*pxPerSec+xoffset-legerWidth)+'px; top:'+(heightC4-15*heightUnit-legerWidth)+'px; width:'+0+'px; height:'+9*heightUnit+'px; border:'+legerWidth+'px solid rgba(30,120,255,0.4);"></div>';
+		str+='<div style="position:absolute; left:'+(t*pxPerSec+xoffset-4)+'px; top:'+(heightC4-15*heightUnit-legerWidth-20)+'px; width:'+0+'px; height:'+0*heightUnit+'px; color:rgba(30,120,255,0.4); font-size:8pt">'+t+'</div>';
 	}//endfor t
 	str+='<img src="img/Gclef.png" height="'+(7.5*heightUnit)+'" style="position:absolute; left:'+(20)+'px; top:'+(heightC4-6.5*heightUnit)+'px;"/>';
 	str+='<img src="img/Fclef.png" height="'+(3.4*heightUnit)+'" style="position:absolute; left:'+(20+3)+'px; top:'+(heightC4+0.9*heightUnit)+'px;"/>';
@@ -468,8 +468,8 @@ if(drawmode==0){
 
 	//Draw time lines
 	for(var t=0;t<maxTime;t+=1){
-		str+='<div style="position:absolute; left:'+(t*pxPerSec+xoffset-legerWidth)+'px; top:'+40+'px; width:'+0+'px; height:'+970+'px; border:'+legerWidth+'px solid rgba(30,30,30,0.3);"></div>';
-		str+='<div style="position:absolute; left:'+(t*pxPerSec+xoffset-4)+'px; top:'+20+'px; width:'+0+'px; height:'+10*heightUnit+'px; color:rgba(30,30,30,0.3); font-size:8pt">'+t+'</div>';
+		str+='<div style="position:absolute; left:'+(t*pxPerSec+xoffset-legerWidth)+'px; top:'+40+'px; width:'+0+'px; height:'+970+'px; border:'+legerWidth+'px solid rgba(30,120,255,0.4);"></div>';
+		str+='<div style="position:absolute; left:'+(t*pxPerSec+xoffset-4)+'px; top:'+20+'px; width:'+0+'px; height:'+10*heightUnit+'px; color:rgba(30,120,255,0.4); font-size:8pt">'+t+'</div>';
 	}//endfor t
 
 	//Draw notes
@@ -848,6 +848,7 @@ function SetListenButton(){
 		var dom_obj_parent = dom_obj.parentNode;
 		dom_obj_parent.removeChild(dom_obj);
 		$('#display').stop();
+		Draw();
 	});
 }//end SetListenButton
 
