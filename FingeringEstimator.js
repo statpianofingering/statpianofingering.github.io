@@ -29,36 +29,279 @@ window.onload = function(){
 
 function ReadFile(file,addmode=1){
 	var reader = new FileReader();
-	reader.readAsText(file);
 
-	reader.onload = function(e){
-		fin=[];
-		var fileContent=reader.result.split(/\n/);
-		for(var i=0,len=fileContent.length;i<len;i+=1){
-			if(fileContent[i]==""){continue;}
-			if(fileContent[i][0]=='/' || fileContent[i][0]=='#'){continue;}
-			var finEvt=new FingeringEvt();
-			finEvt.FromFileEvt(fileContent[i].split(/\s+/));
-			fin.push(finEvt);
-		}//endfor i
+	if(file.name.indexOf('.mid')>=0){//MIDI file
 
-		if(fin[fin.length-1].offtime+3>maxTime){maxTime=fin[fin.length-1].offtime+3;}
+	var reader = new FileReader();
+	reader.readAsArrayBuffer(file);
 
-		edits=[];
-		document.getElementById('freetext').value='';
-//		fingeringsGT.push(fin);
+		reader.onload = function(){
+			midi=new Midi();
+			pr=new PianoRoll();
+			var fileContent=new Uint8Array(reader.result);
+			var ch=[];
+			var pos=0;
+			midi.evts=[];
+			//Read header
+			ch=fileContent.slice(pos,pos+4); pos+=4;
+			if(!(ch[0]==77&&ch[1]==84&&ch[2]==104&&ch[3]==100)){console.log('Error: file does not start with MThd');return;}//endif
+			ch=fileContent.slice(pos,pos+4); pos+=4;// track length=6
+			ch=fileContent.slice(pos,pos+2); pos+=2;//format number==0 or 1
+			midi.formatType=ch[1];
+//console.log('formatType : '+midi.formatType);
+			if(midi.formatType!=0 && midi.formatType!=1){console.log('Error: format type is not 0 nor 1');return;}
+			ch=fileContent.slice(pos,pos+2); pos+=2;//number of track
+			midi.nTrack=ch[1];
+//console.log('Number of tracks : '+midi.nTrack);
+			if(midi.nTrack<1){console.log('Error: track number less than 1');return;}
+			ch=fileContent.slice(pos,pos+2); pos+=2;//tick per quater tone
+			midi.TPQN=ch[0]*16*16+ch[1];
+//console.log('TPQN : '+midi.TPQN);
 
-		ClearDifficulty();
-		Draw();
-// 		if(addmode==1){
-// 			fingeringsGT.push(fin);
-// 		}else if(addmode==2){
-// 			fingeringsEST1.push(fin);
-// 		}else if(addmode==3){
-// 			fingeringsEST2.push(fin);
-// 		}//endif
+			//Read track data
+			var runningStatus;
+			for(var i=0;i<midi.nTrack;i+=1){
+				ch=fileContent.slice(pos,pos+4); pos+=4;//
+				if(!(ch[0]==77&&ch[1]==84&&ch[2]==114&&ch[3]==107)){console.log('Error: track does not start with MTrk');return;}//endif
+				ch=fileContent.slice(pos,pos+4); pos+=4;// track length
+				var trk_len=ch[3]+16*16*(ch[2]+16*16*(ch[1]+16*16*ch[0]));
+				ch=fileContent.slice(pos,pos+trk_len); pos+=trk_len;// track data
+//console.log(trk_len);
 
-	}//end reader.onload
+				var curByte=0;
+				var tick=0;//cumulative tick
+				var deltaTick=0;
+				var readTick=true;
+				while(curByte<trk_len){
+	
+					var midiMes = new MidiMessage();
+					midiMes.track=i;
+					var vi=[];//vector<int>
+	
+					if(readTick){
+						deltaTick=0;
+						while(true){
+							if(ch[curByte]<128){break;}
+							deltaTick=128*deltaTick+(ch[curByte]-128);
+							curByte+=1;
+						}//endwhile
+						deltaTick=128*deltaTick+ch[curByte];
+						tick+=deltaTick;
+						readTick=false; curByte+=1; continue;
+					}//endif
+	
+					var vi=[];
+					if((ch[curByte]>=128 && ch[curByte]<192) || (ch[curByte]>=224 && ch[curByte]<240)){
+						runningStatus=ch[curByte];
+						vi.push( ch[curByte] ); vi.push( ch[curByte+1] ); vi.push( ch[curByte+2] );
+						curByte+=3;
+					}else if(ch[curByte]>=192&&ch[curByte]<224){
+						runningStatus=ch[curByte];
+						vi.push( ch[curByte] ); vi.push( ch[curByte+1] );
+						curByte+=2;
+					}else if(ch[curByte]==240 || ch[curByte]==255){
+						runningStatus=ch[curByte];
+						vi.push( ch[curByte] );
+						curByte+=1;
+						if(runningStatus==255){
+							vi.push( ch[curByte] );//type of metaevent
+							curByte+=1;
+						}//endif
+						var numBytes=0;
+						while(true){
+							if(ch[curByte]<128) break;
+							numBytes=128*numBytes+(ch[curByte]-128);
+							vi.push( ch[curByte] );
+							curByte+=1;
+						}//endwhile
+						numBytes=128*numBytes+ch[curByte];
+						vi.push( ch[curByte] );
+						for(var j=0;j<numBytes;j+=1){vi.push( ch[curByte+1+j] );}
+						curByte+=1+numBytes;
+					}else if(ch[curByte]<128){
+						if((runningStatus>=128 && runningStatus<192) || (runningStatus>=224 && runningStatus<240)){
+							vi.push( runningStatus ); vi.push( ch[curByte] ); vi.push( ch[curByte+1] );
+							curByte+=2;
+						}else if(runningStatus>=192 && runningStatus<224){
+							vi.push( runningStatus ); vi.push( ch[curByte] );
+							curByte+=1;
+						}else if(runningStatus==240 || runningStatus==255){
+							vi.push( runningStatus );
+							if(runningStatus==255){curByte+=1; vi.push( ch[curByte] );}
+							curByte+=1;
+							var numBytes=0;
+							while(true){
+								if(ch[curByte]<128) break;
+								numBytes=128*numBytes+(ch[curByte]-128);
+								vi.push( ch[curByte] );
+								curByte+=1;
+							}//endwhile
+							numBytes=128*numBytes+ch[curByte];
+							vi.push( ch[curByte] );
+							for(var j=0;j<numBytes;j+=1){vi.push( ch[curByte+1+j] );}
+							curByte+=1+numBytes;
+						}else{
+							console.log('Error: runningStatus has an invalid value : '+runningStatus); return; break;
+						}//endif
+					}else{
+						console.log('Error: unknown events in the trk : '+i+' '+curByte+' '+ch[curByte]); return; break;
+					}//endif
+	
+					midiMes.tick=tick;
+					midiMes.mes=vi;
+ 					midi.evts.push(midiMes);
+					readTick=true;	
+				}//endwhile
+
+			}//endfor i
+
+			midi.evts.sort(LessTickMidiMessage);
+
+			// set times
+			var tickPoint=0;
+			var timePoint=0;
+			var currDurQN=500000;
+			for(var i=0,len=midi.evts.length;i<len;i+=1){
+				midi.evts[i].time=timePoint+(1.*(midi.evts[i].tick-tickPoint)/(1.*midi.TPQN))*(currDurQN/1000000.);
+// 				midi.evts[i].time=timePoint+((double)(midi.evts[i].tick-tickPoint)/(double)TPQN)*((double)currDurQN/1000000.);
+				if(midi.evts[i].mes[0]==255 && midi.evts[i].mes[1]==81 && midi.evts[i].mes[2]==3){
+					currDurQN=midi.evts[i].mes[3]*256*256+midi.evts[i].mes[4]*256+midi.evts[i].mes[5];
+					timePoint=midi.evts[i].time;
+					tickPoint=midi.evts[i].tick;
+				}//endif
+			}//endfor i
+
+console.log(midi.evts.length);
+
+			var onPosition=[];
+			for(var i=0;i<16;i+=1){onPosition[i]=[];for(var j=0;j<128;j+=1){onPosition[i][j]=-1;}}//endfor i,j
+			var evt=new PianoRollEvt();
+			var curChan;
+
+			for(var n=0,len=midi.evts.length;n<len;n+=1){
+	
+				if(midi.evts[n].mes[0]>=128 && midi.evts[n].mes[0]<160){//note-on or note-off event
+					curChan=midi.evts[n].mes[0]%16;
+					if(midi.evts[n].mes[0]>=144 && midi.evts[n].mes[2]>0){//note-on
+						if(onPosition[curChan][midi.evts[n].mes[1]]>=0){
+							console.log('Warning: (Double) note-on event before a note-off event '+PitchToSitch(midi.evts[n].mes[1]));
+							pr.evts[onPosition[curChan][midi.evts[n].mes[1]]].offtime=midi.evts[n].time;
+							pr.evts[onPosition[curChan][midi.evts[n].mes[1]]].offvel=-1;
+						}//endif
+						onPosition[curChan][midi.evts[n].mes[1]]=pr.evts.length;
+						evt.channel=curChan;
+						evt.sitch=PitchToSitch(midi.evts[n].mes[1]);
+						evt.pitch=midi.evts[n].mes[1];
+						evt.onvel=midi.evts[n].mes[2];
+						evt.offvel=0;
+						evt.ontime=midi.evts[n].time;
+						evt.offtime=evt.ontime+0.1;
+						var evt_=JSON.stringify(evt);
+						evt_=JSON.parse(evt_);
+						pr.evts.push(evt_);
+					}else{//note-off
+						if(onPosition[curChan][midi.evts[n].mes[1]]<0){
+							console.log('Warning: Note-off event before a note-on event '+PitchToSitch(midi.evts[n].mes[1])+"\t"+midi.evts[n].time);
+							continue;
+						}//endif
+						pr.evts[onPosition[curChan][midi.evts[n].mes[1]]].offtime=midi.evts[n].time;
+						if(midi.evts[n].mes[2]>0){
+							pr.evts[onPosition[curChan][midi.evts[n].mes[1]]].offvel=midi.evts[n].mes[2];
+						}else{
+							pr.evts[onPosition[curChan][midi.evts[n].mes[1]]].offvel=80;
+						}//endif
+						onPosition[curChan][midi.evts[n].mes[1]]=-1;
+					}//endif
+				}//endif
+			}//endfor n
+	
+			for(var i=0;i<16;i+=1)for(var j=0;j<128;j+=1){
+				if(onPosition[i][j]>=0){
+					console.log('Error: Note without a note-off event');
+					console.log('ontime channel sitch : '+pr.evts[onPosition[i][j]].ontime+"\t"+pr.evts[onPosition[i][j]].channel+"\t"+pr.evts[onPosition[i][j]].sitch);
+					return;
+				}//endif
+			}//endfor i,j
+	
+			for(var n=0,len=pr.evts.length;n<len;n+=1){
+				pr.evts[n].ID=n;
+			}//endfor n
+
+			fin=[];
+			for(var n=0,len=pr.evts.length;n<len;n+=1){
+				var finEvt=new FingeringEvt();
+				finEvt.FromPrEvt(pr.evts[n]);
+				fin.push(finEvt);
+			}//endfor n
+
+			if(fin.length==0){return;}
+
+			if(fin[fin.length-1].offtime+3>maxTime){maxTime=fin[fin.length-1].offtime+3;}
+
+			edits=[];
+			document.getElementById('freetext').value='';
+
+			ClearDifficulty();
+			Draw();
+
+		}//end reader.onload
+
+	}else if(file.name.indexOf('ipr')>=0){//Ipr file
+
+		reader.readAsText(file);
+		reader.onload = function(e){
+	
+			fin=[];
+			var fileContent=reader.result.split(/\n/);
+			for(var i=0,len=fileContent.length;i<len;i+=1){
+				if(fileContent[i]==""){continue;}
+				if(fileContent[i][0]=='/' || fileContent[i][0]=='#'){continue;}
+				var finEvt=new FingeringEvt();
+				finEvt.FromIprFileEvt(fileContent[i].split(/\s+/));
+				fin.push(finEvt);
+			}//endfor i
+
+			if(fin.length==0){return;}
+
+			if(fin[fin.length-1].offtime+3>maxTime){maxTime=fin[fin.length-1].offtime+3;}
+
+			edits=[];
+			document.getElementById('freetext').value='';
+
+			ClearDifficulty();
+			Draw();
+	
+		}//end reader.onload
+
+	}else{//not MIDI file
+
+		reader.readAsText(file);
+		reader.onload = function(e){
+	
+			fin=[];
+			var fileContent=reader.result.split(/\n/);
+			for(var i=0,len=fileContent.length;i<len;i+=1){
+				if(fileContent[i]==""){continue;}
+				if(fileContent[i][0]=='/' || fileContent[i][0]=='#'){continue;}
+				var finEvt=new FingeringEvt();
+				finEvt.FromFileEvt(fileContent[i].split(/\s+/));
+				fin.push(finEvt);
+			}//endfor i
+
+			if(fin.length==0){return;}
+
+			if(fin[fin.length-1].offtime+3>maxTime){maxTime=fin[fin.length-1].offtime+3;}
+
+			edits=[];
+			document.getElementById('freetext').value='';
+
+			ClearDifficulty();
+			Draw();
+	
+		}//end reader.onload
+
+	}//endif
+
 
 }//end ReadFile
 

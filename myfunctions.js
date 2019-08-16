@@ -2,93 +2,6 @@ function CompareFunc(a,b){
 	return a-b;
 }//end CompareFunc
 
-function SitchToPitch(sitch){
-	var p_rel,p;
-	if(sitch[0]=='C'){p_rel=60;
-	}else if(sitch[0]=='D'){p_rel=62;
-	}else if(sitch[0]=='E'){p_rel=64;
-	}else if(sitch[0]=='F'){p_rel=65;
-	}else if(sitch[0]=='G'){p_rel=67;
-	}else if(sitch[0]=='A'){p_rel=69;
-	}else if(sitch[0]=='B'){p_rel=71;
-	}//endif
-	sitch=sitch.slice(1);
-	var oct=Number(sitch[sitch.length-1]);
-	sitch=sitch.slice(0,sitch.length-1);
-	p=p_rel+(oct-4)*12;
-	if(sitch==""){p+=0;
-	}else if(sitch=="#"){p+=1;
-	}else if(sitch=="##"){p+=2;
-	}else if(sitch=="b"){p-=1;
-	}else if(sitch=="bb"){p-=2;
-	}else if(sitch=="+"){p+=1;
-	}else if(sitch=="++"){p+=2;
-	}else if(sitch=="-"){p-=1;
-	}else if(sitch=="--"){p-=2;
-	}//endif
-	return p;
-}//end SitchToPitch
-
-function SitchToSitchHeight(sitch){
-	var oct=Number(sitch[sitch.length-1]);
-	var ht;
-	if(sitch[0]=='C'){ht=0;
-	}else if(sitch[0]=='D'){ht=1;
-	}else if(sitch[0]=='E'){ht=2;
-	}else if(sitch[0]=='F'){ht=3;
-	}else if(sitch[0]=='G'){ht=4;
-	}else if(sitch[0]=='A'){ht=5;
-	}else if(sitch[0]=='B'){ht=6;
-	}else{ht=0;
-	}//endif
-	return ht+7*(oct-4);
-}//end SitchToSitchHeight
-
-function SitchToAcc(sitch){
-	var accLab=sitch.slice(1,sitch.length-1);
-	if(accLab==""){return 0;
-	}else if(accLab=="#"){return 1;
-	}else if(accLab=="##"){return 2;
-	}else if(accLab=="b"){return -1;
-	}else if(accLab=="bb"){return -2;
-	}else if(accLab=="+"){return 1;
-	}else if(accLab=="++"){return 2;
-	}else if(accLab=="-"){return -1;
-	}else if(accLab=="--"){return -2;
-	}else{return 0;
-	}//endif
-}//end SitchToAcc
-
-class PianoRollEvt{
-	constructor(){
-		this.ID=-1;
-		this.ontime=-1;
-		this.offtime=-1;
-		this.sitch="NA";
-		this.pitch=-1;
-		this.onvel=80;
-		this.offvel=80;
-		this.channel=0;
-		this.endtime=-1;
-		this.label="";
-		this.ext1=-1;
-	}//end constructor
-
-	FromSprEvt(evt){
-		this.ID=Number(evt[0]);
-		this.ontime=Number(evt[1]);
-		this.offtime=Number(evt[2]);
-		this.sitch=evt[3];
-		this.pitch=SitchToPitch(evt[3]);
-		this.onvel=Number(evt[4]);
-		this.offvel=Number(evt[5]);
-		this.channel=Number(evt[6]);
-		this.endtime=-1;
-		this.label="";
-		this.ext1=-1;
-	}//end FromSprEvt
-}//endclass PianoRollEvt
-
 function FingerNumToInt(fingerNum){
 	if(fingerNum[0]=='-'){
 		if(fingerNum[1]=='1'){return -1;
@@ -149,7 +62,42 @@ class FingeringEvt{
 		this.endtime=-1;
 		this.label="";
 		this.ext1=-1;
-	}//end FromSprEvt
+	}//end FromFileEvt
+
+	FromPrEvt(evt){
+		this.ID=evt.ID;
+		this.ontime=evt.ontime;
+		this.offtime=evt.offtime;
+		this.sitch=evt.sitch;
+		this.pitch=evt.pitch;
+		this.onvel=evt.onvel;
+		this.offvel=evt.offvel;
+		this.channel=evt.channel;
+		this.fingerNum='0';
+		this.finger=0;
+		this.fingerRep='0';
+		this.endtime=-1;
+		this.label="";
+		this.ext1=-1;
+	}//end FromPrEvt
+
+	FromIprFileEvt(evt){
+		this.ID=Number(evt[0]);
+		this.ontime=Number(evt[1]);
+		this.offtime=Number(evt[2]);
+		this.pitch=Number(evt[3]);
+		this.sitch=PitchToSitch(this.pitch);
+		this.onvel=Number(evt[4]);
+		this.offvel=Number(evt[5]);
+		this.channel=Number(evt[6]);
+		this.fingerNum='0';
+		this.finger=0;
+		this.fingerRep='0';
+		this.endtime=-1;
+		this.label="";
+		this.ext1=-1;
+	}//end FromIprFileEvt
+
 }//endclass FingeringEvt
 
 function Norm(vd){
