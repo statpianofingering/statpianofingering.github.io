@@ -803,11 +803,14 @@ function SetListenButton(){
 	var synth = new Tone.PolySynth(10).toMaster();
 	document.getElementById('listenButton').addEventListener('click', function(event) {
 		console.log('clicked');
+		synth = new Tone.PolySynth(10).toMaster();
 		var now = Tone.now();
 //		synth.triggerAttackRelease('C5',2,now+1);
 //		synth.triggerAttackRelease('A4',2,now+2);
+		var startTime=Number($("#listenSpeed").val());
 		for(var n=0,len=fin.length;n<len;n+=1){
-			synth.triggerAttackRelease(fin[n].sitch,(fin[n].offtime-fin[n].ontime), now+fin[n].ontime);
+			if(fin[n].ontime<startTime){continue;}
+			synth.triggerAttackRelease(fin[n].sitch,(fin[n].offtime-fin[n].ontime), now+fin[n].ontime-startTime);
 		}//endfor i
 	});
 
