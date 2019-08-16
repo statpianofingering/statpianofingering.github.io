@@ -803,6 +803,10 @@ function SetListenButton(){
 	var synth = new Tone.PolySynth(10).toMaster();
 	document.getElementById('listenButton').addEventListener('click', function(event) {
 		console.log('clicked');
+
+		var str='<div id="timeline" style="position:absolute; left:'+(startTime*pxPerSec+xoffset)+'px; top:'+0+'px; width:'+0+'px; height:'+1000+'px; border:'+legerWidth+'px solid rgba(30,120,255,0.9);"></div>';
+		document.getElementById('display').innerHTML+=str;
+
 		synth = new Tone.PolySynth(10).toMaster();
 		var now = Tone.now();
 //		synth.triggerAttackRelease('C5',2,now+1);
@@ -812,11 +816,30 @@ function SetListenButton(){
 			if(fin[n].ontime<startTime){continue;}
 			synth.triggerAttackRelease(fin[n].sitch,(fin[n].offtime-fin[n].ontime), now+fin[n].ontime-startTime);
 		}//endfor i
+
+		$('#timeline').css({
+			left:startTime*pxPerSec+xoffset
+		}).animate({
+			left:maxTime*pxPerSec+xoffset
+		},(maxTime-startTime)*1000,'linear');
+
+		$('#display').css({
+			scrollLeft:startTime*pxPerSec-500-xoffset
+		}).animate({
+			scrollLeft:maxTime*pxPerSec-500-xoffset
+		},(maxTime-startTime)*1000,'linear');
+
+//	document.getElementById('display').scrollLeft=(document.getElementById('display').scrollLeft+500-xoffset)/1.2+xoffset-500;
+
 	});
 
 	document.getElementById('stopButton').addEventListener('click', function(event) {
 		console.log('clicked');
 		synth.disconnect();
+		var dom_obj = document.getElementById('timeline');
+		var dom_obj_parent = dom_obj.parentNode;
+		dom_obj_parent.removeChild(dom_obj);
+		$('#display').stop();
 	});
 }//end SetListenButton
 
